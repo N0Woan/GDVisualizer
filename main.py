@@ -19,6 +19,7 @@ initial_y = -1.5
 speed = 1
 fps = 60
 coor_size = 15
+seed = 93
 list_algo = ["SGD", "Adam", "RMSprop", "Adagrad", "AdamW", "all"]
 
 def update_method(sender, app_data):
@@ -77,6 +78,10 @@ def update_speed(sender, app_data):
     global speed
     speed = app_data
 
+def update_seed(sender, app_data):
+    global seed
+    seed = app_data
+
 def setup_ui():
     with dpg.window(label="Settings", width=400, height=400, pos=(0, 0)):
         dpg.add_combo(label="Optimizer", items=list_algo, default_value="SGD", callback=update_method)
@@ -96,7 +101,7 @@ def setup_ui():
         dpg.add_button(label="Start", callback=start_callback)
 
 def main():
-    global algo, start_program, initial_x, initial_y, coor_size, fps, lr_rate, speed, alpha, beta1, beta2, eps, weight_decay, momentum
+    global algo, start_program, initial_x, initial_y, coor_size, fps, lr_rate, speed, alpha, beta1, beta2, eps, weight_decay, momentum, seed
     viewer = Viewer()
     setup_ui()
     dpg.create_viewport(title='DearPyGui Controller', width=400, height=400)
@@ -105,7 +110,7 @@ def main():
     
     first_time = True
     points = newpoints(mesh_size=coor_size, num_edge=200)
-    values = np.asarray(generate_function(torch.tensor(points[:, 0]), torch.tensor(points[:, 1])))
+    values = np.asarray(generate_function(torch.tensor(points[:, 0]), torch.tensor(points[:, 1]), seed=seed))
     viewer.points = np.stack([points[:, 0], points[:, 1], values], axis=1)
 
     while not glfw.window_should_close(viewer.win):

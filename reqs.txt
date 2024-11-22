@@ -1,0 +1,9 @@
+PyOpenGL
+glfw
+pandas
+torch
+matplotlib
+numexpr
+dearpygui
+opencv-python
+scipy
